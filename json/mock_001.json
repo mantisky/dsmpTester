@@ -1,0 +1,107 @@
+[
+	{
+		"config": {
+			"name":"MOCK测试系统",
+			"variables": {
+					"method":"POST",
+					"username":"admin",
+					"pwd":"Admin123",
+					"time_format":"%Y-%m-%d",
+                    "Cookie":"B25BE668B50296BAD79E9CD39AAFC904"
+            },
+			"base_url":"http://127.0.0.1:8808",
+			"headers":{
+				"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0",
+				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+				"X-Requested-With": "XMLHttpRequest"
+			}
+		}
+	},
+	{
+		"setup":{
+            "name":"登录系统",
+            "request":{
+                "url":"/login",
+                "method":"$method",
+                "data":{
+                    "username":"$username",
+                    "password":"$pwd"
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "status_code",
+                        200
+                    ]
+                }
+            ],
+            "extract": [
+                {
+                    "status_code":"{{response.status_code}}"
+                }
+            ],
+            "output":[
+                {
+                    "text":"text"
+                },
+                {
+                    "headers":"headers"
+                }
+            ]
+        }
+	},
+    {
+        "test": {
+            "name": "查询已知资产",
+            "request": {
+                "url": "/note",
+                "method": "$method",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "data":{
+                    "note_id":1001
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "status_code",
+                        200
+                    ]
+                }
+            ],
+            "output":[
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "name": "查询告警列表",
+            "request": {
+                "url": "/note?note_id=1002",
+                "method": "GET",
+                "headers":{
+                    "cookie":"$Cookie"
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "status_code",
+                        200
+                    ]
+                }
+            ],
+            "output":[
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    }
+]

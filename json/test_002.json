@@ -1,0 +1,274 @@
+[
+	{
+		"config": {
+			"name":"态势感知--资产管理",
+			"variables": {
+					"method":"POST",
+					"username":"admin",
+					"pwd":"Admin123",
+					"time_format":"%Y-%m-%d",
+                    "corpname":"兆和测试电厂",
+                    "device_register_ip":"172.16.140.213",
+                    "device_tmp_ip":"172.16.140.222",
+                    "device_ip":"172.16.140.254"
+            },
+			"base_url":"https://172.16.140.147:8443/dsmp",
+			"headers":{
+				"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0",
+				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+				"X-Requested-With": "XMLHttpRequest"
+			}
+		}
+	},
+	{
+		"setup":{
+            "name":"登录系统",
+            "status":true,
+            "request":{
+                "url":"/login/login.do?fp=1",
+                "method":"$method",
+                "data":{
+                    "username":"$username",
+                    "pwd":"$pwd"
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "extract": [
+                {
+                    "Cookie": "{{response.headers['Set-Cookie'].split('; ')[0]}}"
+                },
+                {
+                    "status_code":"{{response.status_code}}"
+                }
+            ]
+        }
+	},
+    {
+        "test": {
+            "name": "未知资产查询",
+            "status":true,
+            "request": {
+                "url": "/uidevicetmp/queryDevicetmpList.do",
+                "method": "$method",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "data":{
+                    "AREA": "--请选择--",
+                    "IP":"$device_tmp_ip",
+                    "CORPNAME":"$corpname",
+                    "page": 1,
+                    "rows": 50
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "extract":[
+                {
+                    "lid": "{{json.loads(response.text)['rows'][0]['LID']}}"
+                },
+                {
+                    "corpid": "{{json.loads(response.text)['rows'][0]['CORPID']}}"
+                },
+                {
+                    "partition": "{{json.loads(response.text)['rows'][0]['PARTITION']}}"
+                },
+                {
+                    "devicecode": "{{json.loads(response.text)['rows'][0]['DEVICECODE']}}"
+                },
+                {
+                    "devicename": "{{json.loads(response.text)['rows'][0]['DEVICENAME']}}"
+                }
+            ],
+            "output":[
+                {
+                    "status_code":"status_code"
+                },
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "name": "未知资产编辑",
+            "status":true,
+            "request": {
+                "url": "/uidevicetmp/updateUiDeviceTMPAndChildTmp.do",
+                "method": "$method",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "json":{
+                    "deviceTmp":{
+                        "ip":"$device_tmp_ip",
+                        "lid":"$lid",
+                        "corpid":"$corpid",
+                        "partition":"$partition",
+                        "sitetype":"",
+                        "devicecode":"$devicecode",
+                        "agent_id":"56",
+                        "factory":"兆和",
+                        "hostname":"$devicename",
+                        "devicename":"$devicename",
+                        "innername":"",
+                        "model":"兆和(未知)",
+                        "softversion":"",
+                        "deviceuses":"",
+                        "position":"",
+                        "principle":"",
+                        "telephone":"15625009847",
+                        "remark":"接口测试",
+                        "systemVersion":"Linux",
+                        "belongedMajor":"communication",
+                        "parent_devicecode":"server"
+                    }
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code", 200
+                    ]
+                }
+            ],
+            "output":[
+                {
+                    "status_code":"status_code"
+                },
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "name": "已知资产查询",
+            "status":true,
+            "request": {
+                "url": "/uidevicemonitor/queryListByCondition.do",
+                "method": "$method",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "data":{
+                    "area": "--请选择--",
+                    "ip":"$device_ip",
+                    "corpname":"$corpname",
+                    "page": 1,
+                    "rows": 50
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "extract":[
+                {
+                    "device_id": "{{str(json.loads(response.text)['rows'][0]['id'])}}"
+                },
+                {
+                    "corpid":"{{json.loads(response.text)['rows'][0]['guid'].split('-')[0]}}"
+                },
+                {
+                    "xjqy":"{{json.loads(response.text)['rows'][0]['guid'].split('-')[0]}}"
+                },
+                {
+                    "area":"{{json.loads(response.text)['rows'][0]['area']}}"
+                },
+                {
+                    "guid":"{{json.loads(response.text)['rows'][0]['guid']}}"
+                }
+            ],
+            "output":[
+                {
+                    "status_code":"status_code"
+                },
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "name": "已知资产编辑",
+            "status": true,
+            "request": {
+                "url": "/uidevicemonitor/newUpdateUiDevice.do",
+                "method": "$method",
+                "headers": {
+                    "cookie": "$Cookie"
+                },
+                "json": {
+                    "TUiDevice":{
+                        "beforState":"1",
+                        "id":"$device_id",
+                        "ip":"$device_ip",
+                        "corpid":"$corpid",
+                        "xjqy":"$xjqy",
+                        "area":"$area",
+                        "voltagelevel":"",
+                        "zdlx":"",
+                        "parent_devicecode":"server",
+                        "devicecode":"SVR",
+                        "agentId":"56",
+                        "factory":"兆和",
+                        "name":"254test1129",
+                        "ipFetch":"",
+                        "areapm":"",
+                        "showname":"254test1129",
+                        "state":"1",
+                        "user":"",
+                        "model":"兆和(未知)",
+                        "principal":"",
+                        "version":"",
+                        "remark":"接口测试",
+                        "mac":"172.16.140.213",
+                        "guid":"$guid",
+                        "bussysId":"",
+                        "phyAddress":"",
+                        "systemVersion":"Linux",
+                        "belongedMajor":"waterSchedule",
+                        "phone":"15625009847"
+                    }
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "output": [
+                {
+                    "status_code": "status_code"
+                },
+                {
+                    "text": "text"
+                }
+            ]
+        }
+    }
+]

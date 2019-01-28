@@ -1,0 +1,185 @@
+[
+	{
+		"config": {
+			"name":"态势感知--装置注册",
+			"variables": {
+					"method":"POST",
+					"username":"admin",
+					"pwd":"Admin123",
+					"time_format":"%Y-%m-%d",
+                    "corpname":"兆和测试电厂",
+                    "device_register_ip":"172.16.140.213",
+                    "device_tmp_ip":"172.16.140.222",
+                    "device_ip":"172.16.140.254"
+            },
+			"base_url":"https://172.16.140.147:8443/dsmp",
+			"headers":{
+				"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0",
+				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+				"X-Requested-With": "XMLHttpRequest"
+			}
+		}
+	},
+	{
+		"setup":{
+            "name":"登录系统",
+            "status":true,
+            "request":{
+                "url":"/login/login.do?fp=1",
+                "method":"$method",
+                "data":{
+                    "username":"$username",
+                    "pwd":"$pwd"
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "extract": [
+                {
+                    "Cookie": "{{response.headers['Set-Cookie'].split('; ')[0]}}"
+                },
+                {
+                    "status_code":"{{response.status_code}}"
+                }
+            ]
+        }
+	},
+    {
+        "test": {
+            "name": "厂站装置查询",
+            "status":true,
+            "request": {
+                "url": "/uideviceinit/queryUiDeviceInitList.do",
+                "method": "$method",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "data":{
+                    "corpname": "$corpname",
+                    "orgname": "",
+                    "ip": "$device_register_ip",
+                    "guid": "",
+                    "registerTime": "",
+                    "endTime": "",
+                    "page": 1,
+                    "rows": 20
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "extract":[
+                {
+                    "register_id": "{{str(json.loads(response.text)['rows'][0]['id'])}}"
+                },
+                {
+                    "state": "{{json.loads(response.text)['rows'][0]['id']}}"
+                }
+            ],
+            "output":[
+                {
+                    "status_code":"status_code"
+                },
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "name": "厂站装置配置下发",
+            "status": true,
+            "request": {
+                "url": "/uideviceinit/doDeviceInitRegister.do",
+                "method": "GET",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "data":{
+                    "id": "['$register_id']"
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                }
+            ],
+            "output":[
+                {
+                    "status_code":"status_code"
+                },
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    },
+    {
+        "test": {
+            "name": "厂站装置查询",
+            "status":true,
+            "request": {
+                "url": "/uideviceinit/queryUiDeviceInitList.do",
+                "method": "$method",
+                "headers":{
+                    "cookie":"$Cookie"
+                },
+                "data":{
+                    "corpname": "$corpname",
+                    "orgname": "",
+                    "ip": "$device_register_ip",
+                    "guid": "",
+                    "registerTime": "",
+                    "endTime": "",
+                    "page": 1,
+                    "rows": 20
+                }
+            },
+            "validate": [
+                {
+                    "eq": [
+                        "response.status_code",
+                        200
+                    ]
+                },
+                {
+                    "eq": [
+                        "json.loads(response.text)['rows'][0]['state']",
+                        1
+                    ]
+                }
+            ],
+            "extract":[
+                {
+                    "register_id": "{{str(json.loads(response.text)['rows'][0]['id'])}}"
+                },
+                {
+                    "state": "{{json.loads(response.text)['rows'][0]['id']}}"
+                }
+            ],
+            "output":[
+                {
+                    "status_code":"status_code"
+                },
+                {
+                    "text":"text"
+                }
+            ]
+        }
+    }
+]
