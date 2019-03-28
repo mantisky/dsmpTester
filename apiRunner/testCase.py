@@ -9,6 +9,7 @@
 import requests
 import re
 import json
+import pdb
 
 requests.packages.urllib3.disable_warnings()
 
@@ -25,16 +26,16 @@ class TestCase():
             self.variables = {}
 
         if case_json['status'] :
-            ## 执行请求
+            print("## 执行请求 ##")
             self.requestsBase()
 
-            ## 提取变量
+            print("## 提取变量 ##")
             self.extractBase()
 
-            ## 断言
+            print("## 断言 ##")
             self.validateBase()
 
-            ## 输出到日志
+            print("## 输出到日志 ##")
             self.outBase()
 
         else:
@@ -95,7 +96,7 @@ class TestCase():
                 for ss in eq_list:
                     key = ss[0]
                     value = ss[1]
-                    test_key = eval('{key}'.format(key=key))
+                    test_key = self.executeCode('{key}'.format(key=key))
 
                     assert test_key == value
                 print("断言成功！")
@@ -109,6 +110,7 @@ class TestCase():
     ## 提取变量
     def extractBase(self):
         response = self.response
+        # pdb.set_trace()
         try:
             extract = self.case_json['extract']
 
@@ -119,7 +121,7 @@ class TestCase():
             for ii in extract:
                 for key, value in ii.items():
                     value = re.findall(r'\{\{(.*)\}\}', value)
-                    self.variables['{}'.format(key)] = eval("{}".format(value[0]))
+                    self.variables['{}'.format(key)] = self.executeCode("{}".format(value[0]))
                     #print('variables: ',self.variables)
 
     ## 输出到日志
@@ -132,5 +134,21 @@ class TestCase():
         else:
             for ii in output:
                 for key, value in ii.items():
-                    value = eval("response.{value}".format(value=value))
+                    value = self.executeCode("response.{value}".format(value=value))
                     print("{key}: {value}".format(key=key, value=value))
+
+    ## 执行python代码
+    def executeCode(self, code):
+        response = self.response
+        try:
+            resp = eval(code)
+            return resp
+        except Exception as err:
+            raise ExecuteError(err)
+
+
+class ExecuteError(Exception):
+    def __init__(self,msg):
+        self.msg=msg
+    def __str__(self):
+        return self.msg

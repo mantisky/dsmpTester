@@ -4,121 +4,253 @@
       "ip":"172.16.140.147",
       "port":9092,
       "variables": {
-        "device_guid":"00000102-363aa04e-4467-41a9-828d-b131281ca9b6",
-        "asset_guid":"00000102-363aa04e-4467-41a9-828d-b131281ca9b6",
-        "time":"2019-01-21 15:59:54",
-        "msg":"Test0117",
-        "asset_guid_a":"00000102-363aa04e-4467-41a9-828d-b6666e6ca6b6",
-        "ip":"1.2.3.4"
+        "device_guid":"00000101-72ab83bb-a597-431e-8f08-33c46a207777",
+		"asset_guid":"00000101-72ab83bb-a597-431e-8f08-33c46a207777",
+		"asset_guid_tmp":"00000101-72ab83bb-a597-431e-8f08-33c46a207777",
+        "asset_guid_vead":"00000101-72ab83bb-a597-431e-8f08-33c46a207777",
+		"asset_guid_sw":"00000101-4dce5fe2-f8b5-4e2d-b083-0aec0628142a",
+		"asset_guid_svr":"00000101-4dce5fe2-f8b5-4e2d-b083-0aec0628142a",
+		"asset_guid_dcd":"00000101-4dce5fe2-f8b5-4e2d-b083-0aec0628142a",
+		"asset_guid_fw":"00000101-4dce5fe2-f8b5-4e2d-b083-0aec0628142a",
+        "time":"2019-02-14 15:59:54",
+		"ip":"172.16.140.104"
       }
     }
   },
   {
     "test":{
-      "name":"USB告警-USB插入",
-      "status":true,
-      "times":1,
-      "topic":"Event",
-      "value":"<2>^$time^$device_guid^DCD^$time^$asset_guid^SVR^5^17^1^2^1^{1-1}{-}{-}{-}{104}{-}{<-$msg@->}"
-    }
-  },
-  {
-    "test":{
-      "name":"USB告警-USB拔出",
-      "status":true,
-      "times":1,
-      "topic":"Event",
-      "value":"<2>^$time^$device_guid^DCD^$time^$asset_guid^SVR^5^18^1^2^1^{1-1}{-}{-}{-}{104}{-}{<-$msg@->}"
-    }
-  },
-  {
-    "test":{
-      "name":"资产发现",
+      "name":"登录操作-修改配置-纵向加密认证装置",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<3>^$time^$device_guid^DCD^$time^$device_guid^DCD^6^3^1^$asset_guid_a^-^-^$ip^-^3^II^A^$ip/16^0"
+      "value":"<3>^$time^$device_guid^DCD^$time^asset_guid_vead^VEAD^0^3^1^2 update ip config"
     }
   },
   {
     "test":{
-      "name":"交换机网口down",
+      "name":"网络接入退出-网络接入-交换机",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<2>^$time^$device_guid^DCD^$time^$asset_guid^SW^1^2^1^{GigabitEthernet0/0/14}"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_sw^SW^1^1^1^{g0/0/1}"
     }
   },
   {
     "test":{
-      "name":"交换机网口up",
+      "name":"网络接入退出-网络退出-交换机",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<2>^$time^$device_guid^DCD^$time^$asset_guid^SW^1^1^1^{GigabitEthernet0/0/14}"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_sw^SW^1^2^1^{g0/0/2}"
     }
   },
   {
     "test":{
-      "name":"ftp登入",
+      "name":"运行状态-CPU使用率-服务器",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_a^VEAD^3^11^1^FTP^$ip^ibm^$msg"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^1^21^1^10"
     }
   },
   {
     "test":{
-      "name":"ftp退出",
+      "name":"运行状态-内存使用率-服务器",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_a^VEAD^3^12^1^FTP^$ip^ibm^$msg"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^1^22^1^10"
     }
   },
   {
     "test":{
-      "name":"ftp错误",
+      "name":"运行状态-硬盘使用率-服务器",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_a^VEAD^3^13^1^FTP^$ip^ibm^$msg"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^1^23^1^"
     }
   },
   {
     "test":{
-      "name":"agent在线",
+      "name":"运行状态-明密文数据-纵向加密认证装置",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<1>^$time^$device_guid^DCD^$time^$asset_guid^SVR^6^15^1^online"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_vead^VEAD^1^26^1^18153865 0"
     }
   },
   {
     "test":{
-      "name":"agent离线",
+      "name":"运行状态-备机心跳丢失-纵向加密认证装置",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<1>^$time^$device_guid^DCD^$time^$asset_guid^SVR^6^16^1^offline"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_vead^VEAD^1^27^1^2"
     }
   },
   {
     "test":{
-      "name":"交换机登录-失败",
-      "status":false,
-      "times":3,
-      "topic":"Event",
-      "value":"<4>^$time^device_guid^DCD^$time^$asset_guid^SW^0^5^1^-^$ip^huawei^-"
-    }
-  },
-  {
-    "test":{
-      "name":"交换机登录-成功",
+      "name":"运行状态-隧道建立错误-纵向加密认证装置",
       "status":false,
       "times":1,
       "topic":"Event",
-      "value":"<4>^$time^device_guid^DCD^$time^$asset_guid^SW^0^3^1^-^$ip^huawei^-"
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_vead^VEAD^2^1^1^2 192.168.3.5 192.168.3.6 SM2 verify error"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-登录成功-态势感知采集装置",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_dcd^DCD^3^11^1^-^172.16.140.155^root^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-登录成功-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^3^11^1^-^172.16.140.155^root^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-登录成功-防火墙",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_fw^FW^3^11^1^-^8.8.8.8^admin^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-登录失败-态势感知采集装置",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_dcd^DCD^3^12^1^-^172.16.140.155^root^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-登录失败-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^3^12^1^-^172.16.140.155^root^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-登录失败-防火墙",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_fw^FW^3^12^1^-^8.8.8.8^admin^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-退出登录-态势感知采集装置",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_dcd^DCD^3^13^1^-^172.16.140.155^root^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-退出登录-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^3^13^1^-^172.16.140.155^root^-"
+    }
+  },
+  {
+    "test":{
+      "name":"登录操作-退出登录-防火墙",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_fw^FW^3^13^1^-^8.8.8.8^admin^-"
+    }
+  },
+  {
+    "test":{
+      "name":"网络行为-不符合安全策略访问-防火墙",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$asset_guid_fw^FW^3^1^1^8.8.8.854^-^-^192.168.2.1^-^-"
+    }
+  },
+  {
+    "test":{
+      "name":"资产发现-发现新设备-态势感知采集装置",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$device_guid^DCD^6^3^1^$asset_guid_tmp^-^-^$ip^-^3^II^A^$ip/16^0"
+    }
+  },
+  {
+    "test":{
+      "name":"移动介质-usb设备拔出-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<2>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^5^18^1^1^1^{1-1}{Cruzer Blade}{-}{-}{-}{-}{<-@->}"
+    }
+  },
+  {
+    "test":{
+      "name":"移动介质-usb设备接入-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<2>^$time^$device_guid^DCD^$time^$asset_guid_svr^SVR^5^17^1^2^1^{1-1}{-}{-}{-}{3}{-}{<-@->}"
+    }
+  },
+  {
+    "test":{
+      "name":"资产状态上送-未知资产在线-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$device_guid^DCD^6^5^1^$asset_guid_tmp^online"
+    }
+  },
+  {
+    "test":{
+      "name":"资产状态上送-未知资产离线-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$device_guid^DCD^6^6^1^$asset_guid_tmp^offline"
+    }
+  },
+  {
+    "test":{
+      "name":"资产状态上送-已知资产在线-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$device_guid^DCD^6^7^1^$asset_guid^online"
+    }
+  },
+  {
+    "test":{
+      "name":"资产状态上送-已知资产离线-服务器",
+      "status":false,
+      "times":1,
+      "topic":"Event",
+      "value":"<3>^$time^$device_guid^DCD^$time^$device_guid^DCD^6^8^1^$asset_guid^offline"
     }
   }
+  
+  
 ]

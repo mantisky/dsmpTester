@@ -8,9 +8,12 @@
 					"pwd":"Admin123",
 					"time_format":"%Y-%m-%d",
                     "corpname":"兆和测试电厂",
-                    "device_register_ip":"172.16.140.213",
+                    "device_register_ip":"172.16.140.211",
                     "device_tmp_ip":"172.16.140.222",
-                    "device_ip":"172.16.140.254"
+                    "device_ip":"172.16.140.254",
+                    "alarmBeginTime":"2019-02-27 14:26:54",
+                    "alarmEndTime":"2019-02-27 14:26:54",
+                    "alarmType":"移动介质"
             },
 			"base_url":"https://172.16.140.147:8443/dsmp",
 			"headers":{
@@ -131,7 +134,7 @@
     },
     {
         "test": {
-            "name": "厂站装置查询",
+            "name": "厂站装置查询1",
             "status":true,
             "request": {
                 "url": "/uideviceinit/queryUiDeviceInitList.do",
@@ -159,8 +162,8 @@
                 },
                 {
                     "eq": [
-                        "json.loads(response.text)['rows'][0]['state']",
-                        1
+                        "str(json.loads(response.text)['rows'][0]['state'])",
+                        "1"
                     ]
                 }
             ],
